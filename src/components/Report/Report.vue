@@ -3,7 +3,7 @@
  * @Autor: Dai YueLin
  * @Date: 2023-08-24 10:40:38
  * @LastEditors: Dai YueLin
- * @LastEditTime: 2025-10-27 16:06:40
+ * @LastEditTime: 2026-08-10 15:38:11
 -->
 <template>
   <div class="report">
@@ -628,7 +628,9 @@ export default {
             if (this.$route.query.pwflag == "1") {
               this.sfStatus = true;
             } else {
+              //免密分享
               this.sfStatus = false;
+              this.queryReport();
             }
           } else {
             this.yyStatus = true;
