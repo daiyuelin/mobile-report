@@ -3,7 +3,7 @@
  * @Autor: Dai YueLin
  * @Date: 2023-08-24 10:40:38
  * @LastEditors: Dai YueLin
- * @LastEditTime: 2026-08-10 15:38:11
+ * @LastEditTime: 2026-08-10 17:11:29
 -->
 <template>
   <div class="report">
@@ -447,9 +447,13 @@
                       v-if="checked"
                       v-model="password"
                       name="密码"
-                      type="digit"
-                      placeholder="请输入密码"
-                      :rules="[{ required: true }]"
+                      type="number"
+                      placeholder="请输入6位数字密码"
+                      maxlength="6"
+                      :rules="[
+                        { required: true, message: '请输入密码' },
+                        { pattern: /^\d{6}$/, message: '请输入6位纯数字' },
+                      ]"
                     />
                   </van-form>
                 </div>
@@ -789,9 +793,10 @@ export default {
       }
     },
     changemm() {
-      if (this.checked) {
-        this.password = "";
-      }
+      this.password = "";
+      // if (this.checked) {
+      //   this.password = "";
+      // }
     },
   },
 };
