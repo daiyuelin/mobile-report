@@ -3,7 +3,7 @@
  * @Autor: Dai YueLin
  * @Date: 2023-08-24 10:40:38
  * @LastEditors: Dai YueLin
- * @LastEditTime: 2026-08-10 17:11:29
+ * @LastEditTime: 2026-09-04 14:44:00
 -->
 <template>
   <div class="report">
@@ -525,7 +525,7 @@
 </template>
 
 <script>
-import { queryReport, verifypwd, shareUrl, getToken } from "@/api/user";
+import { verifypwd, shareUrl, getToken } from "@/api/user";
 import { setToken, removeToken } from "@/utils/system";
 import { storeGet } from "@/utils/localStorage";
 
@@ -634,7 +634,8 @@ export default {
             } else {
               //免密分享
               this.sfStatus = false;
-              this.queryReport();
+              // this.queryReport();
+              this.onSubmitYhmm();
             }
           } else {
             this.yyStatus = true;
@@ -645,35 +646,6 @@ export default {
         this.Empty = true;
         this.$toast.fail("网络问题请退出重新进入！");
       });
-    // this.report = {
-    //     organ_name: "南京市江宁区淳化街道方山社区卫生服务中心",
-    //     name: "潘惠华",
-    //     cardno: "320423196803251611",
-    //     sex: "女",
-    //     age: "57Y",
-    //     chk_modality: "CT",
-    //     op_em_hp_ex_mark: "1",
-    //     proj_name: "胸部常规CT",
-    //     ris_study_id: "888888888897250794377491",
-    //     ckpt_name: "胸部",
-    //     chk_dt: "2025-07-19 10:09:00",
-    //     study_primary_id: "6b37e7667d7b0869e9ae5718a9d5acc2",
-    //     rpt_code: "888888888897250794377491",
-    //     result_id: "888888888897250794377491",
-    //     rpt_dt: "2025-07-19 10:20:04",
-    //     rpt_name: "张林岑",
-    //     rv_name: "张俊",
-    //     rpt_seeing: "1.两肺未见明显浸润性病变；2.冠状动脉壁钙化。",
-    //     rpt_descrip:
-    //       "胸廓对称，气管居中。双肺野清晰，纹理分布、走行自然，未见明显异常密度影。气管、支气管开口通畅。肺门及纵隔未见明显增大淋巴结。心脏形态、密度未见明显异常，冠状动脉管壁见钙化。两侧胸腔无积液，两侧胸膜无肥厚。",
-    //     rpt_critical_value: "",
-    //     viewer_url:
-    //       "http://20.30.1.81/mtyw-viewer-for-nt/imaging/imageview/index.html?ThirdPartQueryID=tisS2sALtCSrql%2FzkpfzXSUh0Y3BFSX0em8QkmIkhcGICje18P7HuDp32WNyQzbauGbtho7cbYQBerJ8iBQ0xl%2Fnbj5nyMl%2FG9RyLUHEr1RXMfGA7MX%2FLsx1e3kPY%2BjJ6EhFEr7u%2BtpPyk3vEcaJtXQ9vI%2FG5pnJSL%2BRO1yuShKnnfNaxJQ7AJBmeSNHRpaKR7bI%2F%2F23hBb0xm7OnFQOa2uPCI0%2F5mJls%2Fv8umiz1vQ1mcUnv25IV1XIBGHTM9oHhX2Rjzi8LD7Yqenaizkziw2mEZ07RLhCzxQ5Z647NqGF7vLVZdu1s3uwoe6XFlGno3VhblrRw1pMpcZcqGJnhQ%3D%3D&ThirdPartType=JIANGSUC&sevToken=QYikiVs8m1ngh1WCqtYW3ArXEE6r4Fki9FyGjdP2QcU9WyQ1RcquBMgT6XqSH%2btBMbLiq%2f7ViPayT7heky6MoRMiQ3rD5IVbWVHVeKjes8FX6K0lWoVPQ7RSyZtA6rYRl2lvbC2eA8gzBvpQhwY1yIQp2oS1ovVPk52BUvtbtMQx5LD7%2b3GJFYXEAT898nV3YJgy52xjcwaC1rhVnxRIKIuRJBOFEkxzmgcAzIz%2fduxXvqSYGu6%2b9m1wgJY8S%2fnaofQnWYGC5YZz7r9Gu0RBoLCkbVIpcFh0z86jvz0rJwAr8qEylms%2f3azmV4WRrVpPhk2DQgUuewXHlXOxFukOvg%3d%3d",
-    //     api_status: 200,
-    //   };
-    //   this.Empty = false;
-    //   this.sfStatus = false;
-    //   this.yyStatus = false;
   },
   methods: {
     openView() {
@@ -683,25 +655,25 @@ export default {
         this.$toast.fail("请联系医院上传影像！");
       }
     },
-    queryReport() {
-      if (storeGet("Admin-Token") != "" && storeGet("Admin-Token") != null) {
-        queryReport({ encrypted: this.$route.query.param }).then((res) => {
-          this.report = Object.assign({}, this.report, res);
-          if (this.report.is_report == "1") {
-            this.report = res;
-            this.Empty = false;
-            this.sfStatus = false;
-            this.yyStatus = false;
-            this.$toast("查询成功！");
-          } else {
-            this.Empty = true;
-            this.$toast("未查询到相关数据！");
-          }
-        });
-      } else {
-        this.$toast.fail("网络问题请退出重新进入！");
-      }
-    },
+    // queryReport() {
+    //   if (storeGet("Admin-Token") != "" && storeGet("Admin-Token") != null) {
+    //     queryReport({ encrypted: this.$route.query.param }).then((res) => {
+    //       this.report = Object.assign({}, this.report, res);
+    //       if (this.report.is_report == "1") {
+    //         this.report = res;
+    //         this.Empty = false;
+    //         this.sfStatus = false;
+    //         this.yyStatus = false;
+    //         this.$toast("查询成功！");
+    //       } else {
+    //         this.Empty = true;
+    //         this.$toast("未查询到相关数据！");
+    //       }
+    //     });
+    //   } else {
+    //     this.$toast.fail("网络问题请退出重新进入！");
+    //   }
+    // },
     openShare() {
       if (this.$route.query.source == "fx") {
         this.$toast("禁止二次分享！");
@@ -754,6 +726,10 @@ export default {
     },
     //校验用户密码
     onSubmitYhmm() {
+      if(storeGet("Admin-Token") == "" || storeGet("Admin-Token") == null) {
+        this.$toast.fail("网络问题请退出重新进入！");
+        return;
+      }
       verifypwd({
         encrypted_params: this.$route.query.param,
         source: "fx",
@@ -761,9 +737,18 @@ export default {
       }).then((res) => {
         if (res.check_status) {
           //校验成功
-          this.queryReport();
-          // this.sfStatus = false;
-          // this.yyStatus = false;
+          // this.queryReport();
+          this.report = Object.assign({}, this.report, res);
+          if (this.report.is_report == "1") {
+            this.report = res;
+            this.Empty = false;
+            this.sfStatus = false;
+            this.yyStatus = false;
+            this.$toast("查询成功！");
+          } else {
+            this.Empty = true;
+            this.$toast("未查询到相关数据！");
+          }
         } else {
           this.$toast.fail(res.detail);
         }
@@ -771,6 +756,10 @@ export default {
     },
     //校验身份证号后6位
     checkyhsfz() {
+       if(storeGet("Admin-Token") == "" || storeGet("Admin-Token") == null) {
+        this.$toast.fail("网络问题请退出重新进入！");
+        return;
+      }
       if (this.passwordSFZ.trim().length < 6) {
         // 去除空格后判断是否为空
         this.$toast("请输入身份证号后6位！"); // 提示用户
@@ -783,9 +772,18 @@ export default {
         }).then((res) => {
           if (res.check_status) {
             //校验成功
-            this.queryReport();
-            // this.sfStatus = false;
-            // this.yyStatus = false;
+            // this.queryReport();
+            this.report = Object.assign({}, this.report, res);
+            if (this.report.is_report == "1") {
+              this.report = res;
+              this.Empty = false;
+              this.sfStatus = false;
+              this.yyStatus = false;
+              this.$toast("查询成功！");
+            } else {
+              this.Empty = true;
+              this.$toast("未查询到相关数据！");
+            }
           } else {
             this.$toast.fail(res.detail);
           }

@@ -3,13 +3,13 @@
  * @Autor: Dai YueLin
  * @Date: 2021-07-13 14:43:28
  * @LastEditors: Dai YueLin
- * @LastEditTime: 2025-10-24 16:44:46
+ * @LastEditTime: 2026-09-04 16:06:49
  */
 const webConfig = {
   // 接口地址
-  apiUrl: 'http://10.40.7.166:8000',
-  client_id:'X9kLm2nPq7rSt4uVwZ',
-  client_secret:'B5cD8eFg1hJk3mNp6qRs9tUv'
+  apiUrl: '/api',
+  client_id:'pJSCb37o6SL3iKNM5Z',
+  client_secret:'8sFd2kP9vR7nQz5bG1x9'
 }
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
