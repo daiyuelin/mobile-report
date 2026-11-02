@@ -3,7 +3,7 @@
  * @Autor: Dai YueLin
  * @Date: 2023-08-24 10:40:38
  * @LastEditors: Dai YueLin
- * @LastEditTime: 2026-09-04 14:44:00
+ * @LastEditTime: 2026-11-02 13:47:05
 -->
 <template>
   <div class="report">
@@ -292,53 +292,72 @@
           </div>
           <div class="jcsj">
             <div class="card" style="">
-              <div
-                style="
-                  display: flex;
-                  justify-content: left;
-                  align-items: center;
-                  margin-bottom: 0.2rem;
-                "
-              >
-                <div class="line"></div>
-                <div style="font-size: 0.45rem; color: #1aa858">检查所见</div>
-              </div>
-              <div class="describ">{{ report.rpt_seeing }}</div>
-            </div>
-          </div>
-          <div class="jcsj">
-            <div class="card" style="">
-              <div
-                style="
-                  display: flex;
-                  justify-content: left;
-                  align-items: center;
-                  margin-bottom: 0.2rem;
-                "
-              >
-                <div class="line"></div>
-                <div style="font-size: 0.45rem; color: #1aa858">检查描述</div>
-              </div>
-              <div class="describ">
-                {{ report.rpt_descrip }}
-              </div>
+              <van-swipe ref="mySwipe" class="my-swipe" @change="onChange">
+                <van-swipe-item
+                  :style="{ marginBottom: '1rem' }"
+                  v-for="(item, index) in report.rpt_list"
+                  :key="index"
+                >
+                  <div>
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: left;
+                        align-items: center;
+                        margin-bottom: 0.2rem;
+                      "
+                    >
+                      <div class="line"></div>
+                      <div style="font-size: 0.45rem; color: #1aa858">
+                        检查所见
+                      </div>
+                    </div>
+                    <div class="describ">{{ item.rpt_seeing }}</div>
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: left;
+                        align-items: center;
+                        margin-bottom: 0.2rem;
+                        margin-top: 0.4rem;
+                      "
+                    >
+                      <div class="line"></div>
+                      <div style="font-size: 0.45rem; color: #1aa858">
+                        检查描述
+                      </div>
+                    </div>
+                    <div class="describ">
+                      {{ item.rpt_descrip }}
+                    </div>
+                    <div
+                      style="
+                        margin-top: 15px;
+                        color: #585858;
+                        text-align: right;
+                        font-size: 0.346667rem;
+                      "
+                    >
+                      <span style="font-weight: 500">报告医生:</span>
+                      <span style="margin-left: 5px">{{ item.rpt_name }}</span>
+                      <span style="margin-left: 10px; font-weight: 500"
+                        >审核医生:</span
+                      >
+                      <span style="margin-left: 5px">{{ item.rv_name }}</span>
+                    </div>
+                  </div>
+                </van-swipe-item>
+                <template #indicator>
+                  <div class="custom-indicator" @click="handlePageClick">
+                    {{ current + 1 }}/{{ report.rpt_list.length }}
+                  </div>
+                </template>
+              </van-swipe>
             </div>
           </div>
           <div class="jcsj">
             <div class="card" style="">
               <div class="menu">
-                <!-- <div @click="openView" style="margin-right: 0.5rem">
-                  <div>
-                    <img src="../../assets/yixueyingxiang.png" class="icon" />
-                  </div>
-                  <div class="tittle">查看影像</div>
-                </div>
-                <div @click="openShare">
-                  <div>
-                    <img src="../../assets/fenxiang.png" class="icon" />
-                  </div>
-                  <div class="tittle">分享报告</div>
-                </div> -->
                 <div
                   @click="openView"
                   style="
@@ -537,6 +556,7 @@ export default {
   props: {},
   data() {
     return {
+      current: 0,
       //数据是否为空
       Empty: true,
       showKeyboard: false,
@@ -726,7 +746,7 @@ export default {
     },
     //校验用户密码
     onSubmitYhmm() {
-      if(storeGet("Admin-Token") == "" || storeGet("Admin-Token") == null) {
+      if (storeGet("Admin-Token") == "" || storeGet("Admin-Token") == null) {
         this.$toast.fail("网络问题请退出重新进入！");
         return;
       }
@@ -756,7 +776,7 @@ export default {
     },
     //校验身份证号后6位
     checkyhsfz() {
-       if(storeGet("Admin-Token") == "" || storeGet("Admin-Token") == null) {
+      if (storeGet("Admin-Token") == "" || storeGet("Admin-Token") == null) {
         this.$toast.fail("网络问题请退出重新进入！");
         return;
       }
@@ -796,11 +816,30 @@ export default {
       //   this.password = "";
       // }
     },
+    onChange(index) {
+      this.current = index;
+    },
+    // 点击页码触发滑动跳转
+    handlePageClick() {
+      // 调用 Vant2 原生方法，直接跳转到指定索引的轮播项
+      const total = this.report.rpt_list.length; // 总页数
+      const next = (this.current + 1) % total; // 下一页，取余实现循环
+      this.$refs.mySwipe.swipeTo(next);
+    },
   },
 };
 </script>
 
-
+<style>
+.custom-indicator {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  padding: 2px 5px;
+  font-size: 12px;
+  background: rgba(0, 0, 0, 0.1);
+}
+</style>
 <style lang="less" scoped>
 @primary-color: #1aa858;
 .report {
@@ -937,13 +976,12 @@ export default {
           margin-right: 10px;
           font-size: 15px;
           width: 75px;
-          height: 22px;
+          flex-shrink: 0;
           line-height: 22px;
         }
         .value {
           color: #585858;
           font-size: 14px;
-          height: 22px;
           line-height: 22px;
         }
         .menu {
